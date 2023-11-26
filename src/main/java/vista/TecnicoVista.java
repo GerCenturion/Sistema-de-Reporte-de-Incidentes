@@ -5,21 +5,21 @@
 package vista;
 
 import java.util.Scanner;
-import modelo.Cliente;
+
 import modelo.DatosContacto;
 import modelo.Tecnico;
 
 public class TecnicoVista {
 
-    public Tecnico cargarClienteNuevo(int legajo) {
+    public Tecnico cargarTecnicoNuevo(int legajo) {
         Tecnico tecnico = new Tecnico();
-        
+
         System.out.println("Ingrese el apellido del Tecnico");
         tecnico.setApellido(new Scanner(System.in).nextLine());
         System.out.println("Ingrese el nombre del tecnico");
         tecnico.setNombre(new Scanner(System.in).nextLine());
         tecnico.setLegajo(legajo);
-        
+
         DatosContacto datosContacto = new DatosContacto();
         System.out.println("Ingrese el celular del Tecnico");
         datosContacto.setCelular(new Scanner(System.in).nextLong());
@@ -33,7 +33,7 @@ public class TecnicoVista {
         return tecnico;
     }
 
-    public Tecnico modificarCliente(Tecnico tecnico, int legajo) {
+    public Tecnico modificarTecnico(Tecnico tecnico, int legajo) {
         System.out.println("Ingrese el apellido del Tecnico");
         tecnico.setApellido(new Scanner(System.in).nextLine());
         System.out.println("Ingrese el nombre del Tecnico");

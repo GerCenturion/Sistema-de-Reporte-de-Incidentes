@@ -6,25 +6,24 @@ package com.utn.trabajofinalargprograma;
 
 import controlador.GestorCliente;
 import controlador.GestorTecnico;
+import controlador.GestorEspecialidad;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import modelo.Cliente;
-import modelo.ReporteIncidencia;
+import modelo.Especialidad;
 import modelo.Tecnico;
 import vista.ClienteVista;
-import vista.EspecialidadVista;
 import vista.TecnicoVista;
+import vista.EspecialidadVista;
 
 public class MainProgram {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        GestorEspecialidad gestorEspecialidad = new GestorEspecialidad();
         do {
         try {
             //Identifiquese, ingrese su legajo
@@ -39,7 +38,9 @@ public class MainProgram {
             System.out.println("8- Reporte de incidentes resueltos por especialidad");
             System.out.println("9- Reporte Estadistico Técnico mas eficiente");
 
-            int opcionMenu = new Scanner(System.in).nextInt();
+            int opcionMenu = scanner.nextInt();
+            scanner.nextLine();
+
             if (opcionMenu == 1) {
                 GestorCliente gCliente = new GestorCliente();
 
@@ -64,7 +65,8 @@ public class MainProgram {
                         gCliente.eliminar(cliente);
                     }
                 }
-            } else if (opcionMenu == 2) {
+            }
+            else if (opcionMenu == 2) {
                 GestorTecnico gTecnico = new GestorTecnico();
 
                 System.out.println("Ingrese el legajo del tecnico");
@@ -76,7 +78,7 @@ public class MainProgram {
 
                 if (tecnico == null) {
                     System.out.println("El tecnico buscado no existe. Proceda a cargar uno nuevo");
-                    tecnico = vistaTecnico.cargarClienteNuevo(legajo);
+                    tecnico = vistaTecnico.cargarTecnicoNuevo(legajo);
                     EspecialidadVista vistaEspecialidad = new EspecialidadVista();
                     vistaEspecialidad.cargarEspecialidadesTecnico(tecnico);
                     gTecnico.guardar(tecnico);
@@ -84,12 +86,55 @@ public class MainProgram {
                     System.out.println("El tecnico " + tecnico.getApellido() + " " + tecnico.getNombre() + " ya existe. Para modificar ingrese U, si desea eliminar ingrese E");
                     String accion = new Scanner(System.in).nextLine();
                     if (accion.toUpperCase().equals("U")) {
-                        tecnico = vistaTecnico.modificarCliente(tecnico, legajo);
+                        tecnico = vistaTecnico.modificarTecnico(tecnico, legajo);
                         gTecnico.guardar(tecnico);
                     } else if (accion.toUpperCase().equals("E")) {
                         gTecnico.eliminar(tecnico);
                     }
                 }
+            }
+            else if (opcionMenu == 3) {
+                System.out.println("Lista de Especialidades:");
+                List <Especialidad> especialidades = gestorEspecialidad.obtenerTodasEspecialidades();
+                for (Especialidad especialidad : especialidades) {
+                    System.out.println("ID: " + especialidad.getId() + ", Denominación: " + especialidad.getDenominacion());
+                }
+                System.out.println("Seleccione la operación a realizar");
+                System.out.println("1- Agregar Especialidad");
+                System.out.println("2- Eliminar Especialidad");
+
+                int operacionEspecialidad = scanner.nextInt();
+                scanner.nextLine(); // Consumir el salto de línea
+
+                if (operacionEspecialidad == 1) { // Agregar Especialidad
+                    System.out.println("Ingrese la denominación de la especialidad:");
+                    String denominacion = scanner.nextLine();
+                    gestorEspecialidad.agregarEspecialidad(denominacion);
+                    System.out.println("Especialidad agregada exitosamente.");
+                } else if (operacionEspecialidad == 2) { // Eliminar Especialidad
+                    System.out.println("Ingrese el ID de la especialidad a eliminar:");
+                    Long idEspecialidad = scanner.nextLong();
+                    gestorEspecialidad.eliminarEspecialidad(idEspecialidad);
+                    System.out.println("Especialidad eliminada exitosamente.");
+                } else {
+                    System.out.println("Operación no válida.");
+                }
+            }else if (opcionMenu == 4) {
+            }
+            else if (opcionMenu == 5) {
+                // ... (código para Administrar Servicios)
+            }
+            else if (opcionMenu == 6) {
+                // ... (código para Administrar Reporte Incidencia)
+            }
+            else if (opcionMenu == 7) {
+                // ... (código para Reporte de incidentes por tecnico por dias)
+            }
+            else if (opcionMenu == 8) {
+                // ... (código para Reporte de incidentes resueltos por especialidad)
+            }
+            else if (opcionMenu == 9) {
+                // ... (código para Reporte Estadistico Técnico mas eficiente)
             }
 
             System.out.println("Desea realizar otra operación? (S/N)");
@@ -105,6 +150,10 @@ public class MainProgram {
         while (true) ; // Este bucle seguirá ejecutándose hasta que se rompa explícitamente
         scanner.close();
     }
+
+
+
+
 
     public static void obtenerConexion() {
         Connection con = null;

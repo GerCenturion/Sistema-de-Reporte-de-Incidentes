@@ -13,7 +13,8 @@ import lombok.Setter;
 @Table(name = "arg_prog_operador_mesa_ayuda")
 @Getter @Setter
 public class OperadorMesaAyuda extends Empleado {
-    
-   
-    
+
+
+    public OperadorMesaAyuda(String apellido, String nombre, int legajo, DatosContacto datosContacto) {
+    }
 }
