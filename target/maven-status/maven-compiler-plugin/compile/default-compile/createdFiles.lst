@@ -1,0 +1,13 @@
+controlador\GestorCliente.class
+modelo\Servicio.class
+modelo\ReporteIncidencia.class
+controlador\Gestor.class
+modelo\DatosContacto.class
+modelo\Empleado.class
+modelo\Especialidad.class
+persistencia\ConfigHibernate.class
+modelo\Tecnico.class
+modelo\EntidadId.class
+modelo\Cliente.class
+com\utn\trabajofinalargprograma\MainProgram.class
+modelo\OperadorMesaAyuda.class
