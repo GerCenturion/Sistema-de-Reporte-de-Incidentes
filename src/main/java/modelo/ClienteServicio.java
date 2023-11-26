@@ -14,12 +14,18 @@ import lombok.Setter;
 @Entity
 @Table(name = "arg_prog_cliente_servicio")
 @Getter @Setter
-public class ClienteServicio extends EntidadId{
-    
+public class ClienteServicio extends EntidadId {
+
     @ManyToOne
     @JoinColumn(name = "idcliente")
     private Cliente cliente;
+
     @ManyToOne
     @JoinColumn(name = "idservicio")
     private Servicio servicio;
+
+    public ClienteServicio(Cliente cliente, Servicio servicio) {
+        this.cliente = cliente;
+        this.servicio = servicio;
+    }
 }

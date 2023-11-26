@@ -16,5 +16,10 @@ public class OperadorMesaAyuda extends Empleado {
 
 
     public OperadorMesaAyuda(String apellido, String nombre, int legajo, DatosContacto datosContacto) {
+        // Asigna los valores recibidos a las propiedades de la clase
+        this.setApellido(apellido);
+        this.setNombre(nombre);
+        this.setLegajo(legajo);
+        this.setDatosContacto(datosContacto);
     }
 }

@@ -7,7 +7,8 @@ package com.utn.trabajofinalargprograma;
 import controlador.GestorCliente;
 import controlador.GestorTecnico;
 import controlador.GestorEspecialidad;
-
+import controlador.GestorOperadorMesaAyuda;
+import controlador.GestorServicios;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
@@ -15,15 +16,19 @@ import java.util.Scanner;
 import modelo.Cliente;
 import modelo.Especialidad;
 import modelo.Tecnico;
+import modelo.OperadorMesaAyuda;
+import modelo.Servicio;
 import vista.ClienteVista;
 import vista.TecnicoVista;
 import vista.EspecialidadVista;
-
+import vista.OperadorMesaAyudaVista;
+import vista.ServiciosVista;
 public class MainProgram {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         GestorEspecialidad gestorEspecialidad = new GestorEspecialidad();
+        GestorOperadorMesaAyuda gOperadorMesaAyuda = new GestorOperadorMesaAyuda();
         do {
         try {
             //Identifiquese, ingrese su legajo
@@ -119,10 +124,35 @@ public class MainProgram {
                 } else {
                     System.out.println("Operación no válida.");
                 }
-            }else if (opcionMenu == 4) {
+            }
+            else if (opcionMenu == 4) {
+                OperadorMesaAyudaVista vistaOperadorMesaAyuda = new OperadorMesaAyudaVista();
+
+                System.out.println("Ingrese el legajo del operador de mesa de ayuda");
+                int legajoOperador = new Scanner(System.in).nextInt();
+
+                OperadorMesaAyuda operadorMesaAyuda = gOperadorMesaAyuda.getOperadorMesaAyudaXLegajo(legajoOperador);
+
+                if (operadorMesaAyuda == null) {
+                    System.out.println("El operador de mesa de ayuda buscado no existe. Proceda a cargar uno nuevo");
+                    operadorMesaAyuda = vistaOperadorMesaAyuda.cargarOperadorMesaAyudaNuevo(legajoOperador);
+                    gOperadorMesaAyuda.guardar(operadorMesaAyuda);
+                } else {
+                    System.out.println("El operador de mesa de ayuda " + operadorMesaAyuda.getApellido() + " "
+                            + operadorMesaAyuda.getNombre() + " ya existe. Para modificar ingrese U, si desea eliminar ingrese E");
+                    String accion = new Scanner(System.in).nextLine();
+                    if (accion.toUpperCase().equals("U")) {
+                        operadorMesaAyuda = vistaOperadorMesaAyuda.modificarOperadorMesaAyuda(operadorMesaAyuda, legajoOperador);
+                        gOperadorMesaAyuda.guardar(operadorMesaAyuda);
+                    } else if (accion.toUpperCase().equals("E")) {
+                        gOperadorMesaAyuda.eliminar(operadorMesaAyuda);
+                    }
+                }
+
             }
             else if (opcionMenu == 5) {
-                // ... (código para Administrar Servicios)
+                ServiciosVista serviciosVista = new ServiciosVista();
+                serviciosVista.mostrarMenuServicios();
             }
             else if (opcionMenu == 6) {
                 // ... (código para Administrar Reporte Incidencia)
@@ -150,10 +180,6 @@ public class MainProgram {
         while (true) ; // Este bucle seguirá ejecutándose hasta que se rompa explícitamente
         scanner.close();
     }
-
-
-
-
 
     public static void obtenerConexion() {
         Connection con = null;
