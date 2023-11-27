@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package modelo;
 
 import java.util.Date;
@@ -18,37 +14,63 @@ import lombok.Setter;
 @Entity
 @Table(name = "arg_prog_reporte_incidencia")
 @Getter @Setter
-public class ReporteIncidencia  extends EntidadId {
-     
+public class ReporteIncidencia extends EntidadId {
+
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaAlta;
+
     @Column(nullable = false)
     private String descripcionProblema;
+
     @Column(nullable = false)
-    private String tipoProblema;//basico, intermedio, complejo
+    private String tipoProblema;
+
     @ManyToOne
     @JoinColumn(name = "idservicio")
-    private Servicio servicio;//N a 1
+    private Servicio servicio;
+
     @ManyToOne
     @JoinColumn(name = "idoperador")
-    private OperadorMesaAyuda operador;//N a 1
+    private OperadorMesaAyuda operador;
+
     @ManyToOne
     @JoinColumn(name = "idcliente", nullable = false)
-    private Cliente cliente;//N a 1
+    private Cliente cliente;
+
     @ManyToOne
     @JoinColumn(name = "idtecnico", nullable = false)
-    private Tecnico tecnico;//N a 1
-    private int tiempoEstimadoResolucion;//horas o minutos
+    private Tecnico tecnico;
+
+    private int tiempoEstimadoResolucion;
+
     @Temporal(TemporalType.DATE)
     private Date fechaPosibleResolucion;
-    private String estado;//pendiente, en proceso, resuelto, anulado
+
+    private String estado;
+
     private String observacionesTecnico;
-    
-    
-    
-    
-    
-    
-    
+
+    public ReporteIncidencia() {
+        // Constructor sin argumentos requerido por JPA
+    }
+
+    public ReporteIncidencia(Date fechaAlta, String descripcionProblema, String tipoProblema,
+                             Servicio servicio, OperadorMesaAyuda operador, Cliente cliente,
+                             Tecnico tecnico, int tiempoEstimadoResolucion, Date fechaPosibleResolucion,
+                             String estado, String observacionesTecnico) {
+        this.fechaAlta = fechaAlta;
+        this.descripcionProblema = descripcionProblema;
+        this.tipoProblema = tipoProblema;
+        this.servicio = servicio;
+        this.operador = operador;
+        this.cliente = cliente;
+        this.tecnico = tecnico;
+        this.tiempoEstimadoResolucion = tiempoEstimadoResolucion;
+        this.fechaPosibleResolucion = fechaPosibleResolucion;
+        this.estado = estado;
+        this.observacionesTecnico = observacionesTecnico;
+    }
+
+    // Otros métodos y constructores
 }

@@ -8,6 +8,7 @@ import modelo.Cliente;
 import modelo.Tecnico;
 import org.hibernate.Query;
 import persistencia.ConfigHibernate;
+import java.util.List;
 
 public class GestorTecnico extends Gestor {
 
@@ -29,5 +30,10 @@ public class GestorTecnico extends Gestor {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Tecnico> obtenerTodosTecnicos() {
+        // Lógica para obtener todos los técnicos desde tu base de datos
+        return null;
     }
 }

@@ -18,13 +18,17 @@ import lombok.Setter;
 @Entity
 @Table(name = "arg_prog_servicio")
 @Getter @Setter
-public class Servicio  extends EntidadId{
-    
+public class Servicio extends EntidadId {
+
     @Column(nullable = false)
     private String denominacion;
+
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ClienteServicio> clientes; 
+    private List<ClienteServicio> cliente; // Cambiado a "clientes"
+
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ReporteIncidencia> reportesIncidencia;
+    private List<ReporteIncidencia> reportesIncidencia; // Mantenido como "reportesIncidencia"
+
+
     
 }

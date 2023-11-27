@@ -5,6 +5,7 @@
 package vista;
 
 import java.util.Scanner;
+import java.util.List;
 import modelo.Cliente;
 import modelo.DatosContacto;
 
@@ -54,6 +55,28 @@ public class ClienteVista {
         
         return cliente;
     
+    }
+
+    public void verClientes(List<Cliente> clientes) {
+        if (clientes.isEmpty()) {
+            System.out.println("No hay clientes para mostrar.");
+        } else {
+            System.out.println("Clientes disponibles:");
+            for (Cliente cliente : clientes) {
+                mostrarInformacionCliente(cliente);
+                System.out.println("------------");
+            }
+        }
+    }
+
+    private void mostrarInformacionCliente(Cliente cliente) {
+        System.out.println("CUIT: " + cliente.getCuit());
+        System.out.println("Razón Social: " + cliente.getRazonSocial());
+
+        DatosContacto datosContacto = cliente.getDatosContacto();
+        System.out.println("Celular: " + datosContacto.getCelular());
+        System.out.println("Email: " + datosContacto.getEmail());
+        System.out.println("Teléfono: " + datosContacto.getTelefono());
     }
     
     

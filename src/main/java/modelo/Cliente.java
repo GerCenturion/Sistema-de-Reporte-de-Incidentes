@@ -39,6 +39,13 @@ public class Cliente extends EntidadId{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "iddatoscontacto")
     private DatosContacto datosContacto;//1 a 1
-    
-    
+
+    public boolean tieneServicioContratado(Servicio servicio) {
+        for (ClienteServicio clienteServicio : this.clientes) {
+            if (clienteServicio.getServicio().equals(servicio)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

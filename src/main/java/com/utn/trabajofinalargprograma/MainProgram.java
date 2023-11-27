@@ -9,26 +9,45 @@ import controlador.GestorTecnico;
 import controlador.GestorEspecialidad;
 import controlador.GestorOperadorMesaAyuda;
 import controlador.GestorServicios;
+import controlador.GestorReporteIncidencia;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
 import java.util.Scanner;
-import modelo.Cliente;
-import modelo.Especialidad;
-import modelo.Tecnico;
-import modelo.OperadorMesaAyuda;
-import modelo.Servicio;
+import java.util.ArrayList;
+import java.util.List;
+import modelo.*;
 import vista.ClienteVista;
 import vista.TecnicoVista;
 import vista.EspecialidadVista;
 import vista.OperadorMesaAyudaVista;
 import vista.ServiciosVista;
+import vista.ReporteIncidenciaVista;
+import static vista.ReporteIncidenciaVista.*;
+
 public class MainProgram {
+
+    // Declarar las listas y variables fuera del método main
+    private static List<Cliente> listaClientes = new ArrayList<>();
+    private static List<Servicio> listaServicios = new ArrayList<>();
+    private static List<OperadorMesaAyuda> listaOperadores = new ArrayList<>();
+    private static List<Tecnico> listaTecnicos = new ArrayList<>();
+    private static ReporteIncidenciaVista reporteIncidenciaVista = new ReporteIncidenciaVista();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         GestorEspecialidad gestorEspecialidad = new GestorEspecialidad();
         GestorOperadorMesaAyuda gOperadorMesaAyuda = new GestorOperadorMesaAyuda();
+        GestorCliente gestorClientes = new GestorCliente();
+        GestorServicios gestorServicios = new GestorServicios();
+        GestorReporteIncidencia gestorReporteIncidencia = new GestorReporteIncidencia();
+        GestorTecnico gestorTecnicos = new GestorTecnico();
+        ClienteVista clienteVista = new ClienteVista();
+        TecnicoVista tecnicoVista = new TecnicoVista();
+        EspecialidadVista especialidadVista = new EspecialidadVista();
+        OperadorMesaAyudaVista operadorMesaAyudaVista = new OperadorMesaAyudaVista();
+        ServiciosVista serviciosVista = new ServiciosVista();
+
         do {
         try {
             //Identifiquese, ingrese su legajo
@@ -151,11 +170,10 @@ public class MainProgram {
 
             }
             else if (opcionMenu == 5) {
-                ServiciosVista serviciosVista = new ServiciosVista();
                 serviciosVista.mostrarMenuServicios();
             }
             else if (opcionMenu == 6) {
-                // ... (código para Administrar Reporte Incidencia)
+                gestionarReportes(scanner, gestorClientes, gestorServicios, gOperadorMesaAyuda, gestorTecnicos, gestorReporteIncidencia);
             }
             else if (opcionMenu == 7) {
                 // ... (código para Reporte de incidentes por tecnico por dias)
@@ -167,18 +185,50 @@ public class MainProgram {
                 // ... (código para Reporte Estadistico Técnico mas eficiente)
             }
 
-            System.out.println("Desea realizar otra operación? (S/N)");
-            String respuesta = scanner.nextLine();
-            if (!respuesta.equalsIgnoreCase("S")) {
-                break; // Salir del bucle si la respuesta no es "S"
-
-            }
 
         } catch (Exception e){
             e.printStackTrace();
         }         }
         while (true) ; // Este bucle seguirá ejecutándose hasta que se rompa explícitamente
-        scanner.close();
+            }
+
+    private static void gestionarReportes(Scanner scanner, GestorCliente gestorClientes,
+                                          GestorServicios gestorServicios,
+                                          GestorOperadorMesaAyuda gOperadorMesaAyuda,
+                                          GestorTecnico gestorTecnicos,
+                                          GestorReporteIncidencia gestorReporteIncidencia) {
+        int opcion;
+        do {
+            System.out.println("\nGestión de Reportes de Incidencia");
+            System.out.println("1- Ver Incidentes por Usuario");
+            System.out.println("2- Crear Nuevo Reporte");
+            System.out.println("3- Cerrar Reporte");
+            System.out.println("0- Volver al Menú Principal");
+            System.out.print("Ingrese su opción: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine();  // Consumir el salto de línea
+
+            switch (opcion) {
+                case 1:
+                    // Lógica para ver incidentes por usuario
+                    // Puedes llamar a un método en ReporteIncidenciaVista para manejar esto
+                    break;
+                case 2:
+                    ReporteIncidenciaVista reporteIncidenciaVista = new ReporteIncidenciaVista();
+                    reporteIncidenciaVista.crearReporte(gestorReporteIncidencia, listaServicios, listaOperadores, listaTecnicos);
+                    break;
+
+                case 3:
+                    // Lógica Cerrar reporte
+                    // Puedes llamar a un método en ReporteIncidenciaVista para manejar esto
+                    break;
+                case 0:
+                    System.out.println("Volviendo al Menú Principal");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Inténtelo de nuevo.");
+            }
+        } while (opcion != 0);
     }
 
     public static void obtenerConexion() {

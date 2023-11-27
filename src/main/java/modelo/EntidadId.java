@@ -19,6 +19,7 @@ public abstract class EntidadId implements Serializable{//representa la clave pr
     @Id//PK
     @GeneratedValue(strategy = GenerationType.IDENTITY)//PK autonumerica
     protected long id;
+    protected ClienteServicio[] clientes;
 
     public long getId() {
         return id;
