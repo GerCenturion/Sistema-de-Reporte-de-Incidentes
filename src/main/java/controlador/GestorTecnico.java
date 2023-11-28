@@ -32,8 +32,14 @@ public class GestorTecnico extends Gestor {
         }
     }
 
-    public List<Tecnico> obtenerTodosTecnicos() {
-        // Lógica para obtener todos los técnicos desde tu base de datos
-        return null;
+    public List<Tecnico> obtenerTodosTecnicosConEspecialidades() {
+        try {
+            Query consulta = sesion.createQuery("SELECT DISTINCT tecnico FROM Tecnico tecnico LEFT JOIN FETCH tecnico.tecnicoEspecialidades tEspecialidad LEFT JOIN FETCH tEspecialidad.especialidad");
+            List<Tecnico> tecnicos = consulta.list();
+            return tecnicos;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -58,7 +58,6 @@ public class ReporteIncidenciaVista {
         System.out.println("Funcionalidad no implementada aún.");
     }
 
-
     private void cerrarModificarReporte(GestorReporteIncidencia gestorReporteIncidencia) {
         // Lógica para cerrar o modificar un reporte existente
         // Puedes implementar aquí la funcionalidad para cerrar o modificar un reporte existente
@@ -72,7 +71,6 @@ public class ReporteIncidenciaVista {
             Cliente cliente = obtenerClientePorCuit(cuit);
 
             if (cliente != null) {
-                // Mostrar nombre del cliente
                 System.out.println("Cliente: " + cliente.getRazonSocial());
 
                 if (!cliente.getServicios().isEmpty()) {
@@ -114,10 +112,8 @@ public class ReporteIncidenciaVista {
         }
     }
 
-
     private Cliente obtenerClientePorCuit(Long cuit) {
         try {
-            // Utiliza el gestorCliente para obtener el cliente por CUIT
             return gestorCliente.getClienteXCUIT(cuit);
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,18 +121,63 @@ public class ReporteIncidenciaVista {
         }
     }
 
+    private Tecnico seleccionarTecnico(List<Tecnico> tecnicos) {
+        try {
+            GestorTecnico gestorTecnico = new GestorTecnico();
+            List<Tecnico> tecnicosConEspecialidades = gestorTecnico.obtenerTodosTecnicosConEspecialidades();
 
-    private Tecnico seleccionarTecnico(List<Tecnico> listaTecnicos) {
-        // Lógica para seleccionar un técnico
-        // Puedes implementar esta lógica según tus necesidades.
-        // Aquí, simplemente seleccionamos el primer técnico de la lista como ejemplo.
-        if (!listaTecnicos.isEmpty()) {
-            return listaTecnicos.get(0);
-        } else {
-            System.out.println("No hay técnicos disponibles. No se puede asignar un técnico al reporte.");
+            // Aquí puedes implementar la lógica para mostrar la lista de técnicos con especialidades
+            // y permitir al usuario seleccionar uno. Puedes utilizar un bucle, mostrar índices, etc.
+            // Aquí te dejo un ejemplo simple:
+
+            for (int i = 0; i < tecnicosConEspecialidades.size(); i++) {
+                Tecnico tecnico = tecnicosConEspecialidades.get(i);
+                System.out.println((i + 1) + ". Legajo: " + tecnico.getLegajo() +
+                        ", Nombre: " + tecnico.getNombreCompleto() +
+                        ", Especialidades: " + obtenerEspecialidades(tecnico));
+            }
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Seleccione un técnico por su número de legajo: ");
+            int legajoSeleccionado = scanner.nextInt();
+
+            // Obtener el técnico seleccionado por su legajo
+            Tecnico tecnicoSeleccionado = gestorTecnico.getTecnicoXLegajo(legajoSeleccionado);
+
+            if (tecnicoSeleccionado != null) {
+                return tecnicoSeleccionado;
+            } else {
+                System.out.println("No se encontró ningún técnico con el legajo proporcionado.");
+                return seleccionarTecnico(tecnicos);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
+
+    private String obtenerEspecialidades(Tecnico tecnico) {
+        StringBuilder especialidadesStr = new StringBuilder();
+        List<TecnicoEspecialidad> especialidades = tecnico.getTecnicoEspecialidades();
+
+        for (TecnicoEspecialidad especialidad : especialidades) {
+            especialidadesStr.append(obtenerDenominacionEspecialidad(especialidad)).append(", ");
+        }
+
+        // Elimina la coma final y espacio si hay al menos una especialidad
+        if (especialidadesStr.length() > 0) {
+            especialidadesStr.delete(especialidadesStr.length() - 2, especialidadesStr.length());
+        }
+
+        return especialidadesStr.toString();
+    }
+
+    private String obtenerDenominacionEspecialidad(TecnicoEspecialidad especialidad) {
+        // Ajusta esto según la estructura de tu clase Especialidad
+        return especialidad.getEspecialidad().getDenominacion();
+    }
+
+
 
     private Date parseFecha(String fechaStr) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -148,5 +189,6 @@ public class ReporteIncidenciaVista {
         }
     }
 }
+
 
 
