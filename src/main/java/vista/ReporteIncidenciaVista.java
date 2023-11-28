@@ -64,7 +64,9 @@ public class ReporteIncidenciaVista {
         System.out.println("Funcionalidad no implementada aún.");
     }
 
-    public void crearReporte(GestorReporteIncidencia gestorReporteIncidencia, List<Servicio> listaServicios, List<Tecnico> listaTecnicos) {
+    public void crearReporte(GestorReporteIncidencia gestorReporteIncidencia,
+                             List<Servicio> listaServicios,
+                             List<Tecnico> listaTecnicos) {
         try {
             System.out.println("Ingrese el CUIT del cliente:");
             long cuit = scanner.nextLong();
@@ -77,6 +79,30 @@ public class ReporteIncidenciaVista {
                     System.out.println("Ingrese la descripción del problema:");
                     scanner.nextLine(); // Consumir el salto de línea
                     String descripcionProblema = scanner.nextLine();
+
+                    System.out.println("Seleccione el tipo de problema:");
+                    System.out.println("1- Sin Urgencia");
+                    System.out.println("2- Moderado");
+                    System.out.println("3- Urgente");
+                    System.out.print("Ingrese su opción: ");
+                    int opcionTipoProblema = scanner.nextInt();
+
+                    // Mapea la opción a un valor de cadena correspondiente
+                    String tipoProblema;
+                    switch (opcionTipoProblema) {
+                        case 1:
+                            tipoProblema = "Sin Urgencia";
+                            break;
+                        case 2:
+                            tipoProblema = "Moderado";
+                            break;
+                        case 3:
+                            tipoProblema = "Urgente";
+                            break;
+                        default:
+                            System.out.println("Opción no válida. Se establecerá el tipo de problema como 'Sin Urgencia'.");
+                            tipoProblema = "Sin Urgencia";
+                    }
 
                     System.out.println("Seleccione un técnico:");
                     Tecnico tecnicoSeleccionado = seleccionarTecnico(listaTecnicos);
@@ -97,10 +123,8 @@ public class ReporteIncidenciaVista {
 
                     // Crear el reporte
                     gestorReporteIncidencia.crearReporte(cliente, descripcionProblema, tecnicoSeleccionado,
-                            tiempoEstimadoResolucion, fechaPosibleResolucion, fechaAlta, estado);
+                            tiempoEstimadoResolucion, fechaPosibleResolucion, fechaAlta, estado, tipoProblema);
 
-                    // Mostrar mensaje de éxito
-                    System.out.println("Reporte creado exitosamente.");
                 } else {
                     System.out.println("El cliente no tiene servicios contratados. No se puede crear un reporte.");
                 }
@@ -189,6 +213,3 @@ public class ReporteIncidenciaVista {
         }
     }
 }
-
-
-
