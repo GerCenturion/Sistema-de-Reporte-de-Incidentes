@@ -28,4 +28,8 @@ public class ClienteServicio extends EntidadId {
         this.cliente = cliente;
         this.servicio = servicio;
     }
+
+    public ClienteServicio() {
+        // Constructor vacío
+    }
 }

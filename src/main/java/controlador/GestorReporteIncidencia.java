@@ -1,21 +1,22 @@
 package controlador;
 
 import modelo.Cliente;
-import modelo.OperadorMesaAyuda;
-import modelo.ReporteIncidencia;
-import modelo.Servicio;
 import modelo.Tecnico;
+import modelo.ReporteIncidencia;
+
+import java.util.Date;  // Make sure to import the correct Date class
+
 import org.hibernate.Query;
 import org.hibernate.Transaction;
 import persistencia.ConfigHibernate;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class GestorReporteIncidencia extends Gestor {
 
-    public GestorReporteIncidencia() {
+    public void crearReporte(Cliente cliente, String descripcionProblema, Tecnico tecnico,
+                             int tiempoEstimadoResolucion, Date fechaPosibleResolucion, Date fechaAlta, String estado) {
         if (sesion == null || !sesion.isOpen()) {
             sesion = ConfigHibernate.openSession();
         }
@@ -47,6 +48,5 @@ public class GestorReporteIncidencia extends Gestor {
             throw new RuntimeException("Error al agregar reporte de incidencia: " + e.getMessage(), e);
         }
     }
-
-    // Otras operaciones necesarias para el manejo de reportes de incidencia
 }
+

@@ -1,148 +1,152 @@
 package vista;
 
-import controlador.GestorReporteIncidencia;
-import controlador.GestorCliente;
-import modelo.Cliente;
-import modelo.OperadorMesaAyuda;
-import modelo.ReporteIncidencia;
-import modelo.Servicio;
-import modelo.Tecnico;
+import controlador.*;
+import modelo.*;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class ReporteIncidenciaVista {
+
     private Scanner scanner;
-    private ClienteVista clienteVista;
     private GestorCliente gestorCliente;
 
-    public ReporteIncidenciaVista() {
-        this.scanner = new Scanner(System.in);
-        this.clienteVista = new ClienteVista();
-        this.gestorCliente = new GestorCliente();
-    }
-    public ReporteIncidencia crearReporte(GestorReporteIncidencia gestorReporteIncidencia,
-                                          List<Servicio> servicios, List<OperadorMesaAyuda> operadores,
-                                          List<Tecnico> tecnicos) {
-        List<Cliente> clientes = gestorCliente.obtenerTodosClientes();
-        Cliente cliente = seleccionarCliente(clientes);
-        if (cliente == null) {
-            System.out.println("No se pudo crear el reporte. Cliente no seleccionado.");
-            return null;
-        }
-
-        mostrarServiciosContratados(cliente, servicios);
-
-        Servicio servicio = seleccionarServicio(servicios);
-        if (servicio == null) {
-            System.out.println("No se pudo crear el reporte. Servicio no seleccionado.");
-            return null;
-        }
-
-        OperadorMesaAyuda operador = seleccionarOperador(operadores);
-        Tecnico tecnico = seleccionarTecnico(tecnicos);
-
-        Date fechaAlta = Calendar.getInstance().getTime();
-
-        System.out.println("Ingrese la descripción del problema:");
-        String descripcionProblema = scanner.nextLine();
-
-        System.out.println("Ingrese el tipo de problema:");
-        System.out.println("1- Software");
-        System.out.println("2- Hardware");
-        String tipoProblema = scanner.nextLine();
-
-        System.out.println("Ingrese el tiempo estimado de resolución (en horas):");
-        int tiempoEstimadoResolucion = scanner.nextInt();
-
-        Date fechaPosibleResolucion = ingresarFecha();
-
-        String estado = "Pendiente";
-
-        scanner.nextLine();
-        System.out.println("Ingrese observaciones del técnico:");
-        String observacionesTecnico = scanner.nextLine();
-
-        ReporteIncidencia nuevoReporte = new ReporteIncidencia(fechaAlta, descripcionProblema, tipoProblema,
-                servicio, operador, cliente, tecnico, tiempoEstimadoResolucion,
-                fechaPosibleResolucion, estado, observacionesTecnico);
-
-        gestorReporteIncidencia.agregarReporteIncidencia(nuevoReporte);
-
-        System.out.println("Reporte de incidencia creado correctamente.");
-        return nuevoReporte;
+    public ReporteIncidenciaVista(Scanner scanner, GestorCliente gestorCliente) {
+        this.scanner = scanner;
+        this.gestorCliente = gestorCliente;
     }
 
-    private void mostrarServiciosContratados(Cliente cliente, List<Servicio> servicios) {
-        System.out.println("Servicios contratados por el cliente:");
-        for (Servicio servicio : servicios) {
-            if (cliente.tieneServicioContratado(servicio)) {
-                System.out.println("- " + servicio.getDenominacion());
+    public void gestionarReportes(GestorReporteIncidencia gestorReporteIncidencia,
+                                  List<Servicio> listaServicios,
+                                  List<Tecnico> listaTecnicos) {
+
+        int opcion;
+        do {
+            System.out.println("\nGestión de Reportes de Incidencia");
+            System.out.println("1- Ver Incidentes por Usuario");
+            System.out.println("2- Crear Nuevo Reporte");
+            System.out.println("3- Modificar/Cerrar Reporte");
+            System.out.println("0- Volver al Menú Principal");
+            System.out.print("Ingrese su opción: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine();  // Consumir el salto de línea
+
+            switch (opcion) {
+                case 1:
+                    verIncidentesPorUsuario(); // Método para ver incidentes por usuario
+                    break;
+                case 2:
+                    crearReporte(gestorReporteIncidencia, listaServicios, listaTecnicos);
+                    break;
+                case 3:
+                    cerrarModificarReporte(gestorReporteIncidencia);
+                    break;
+                case 0:
+                    System.out.println("Volviendo al Menú Principal");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Inténtelo de nuevo.");
             }
-        }
+        } while (opcion != 0);
+    }
+
+    private void verIncidentesPorUsuario() {
+        // Lógica para ver incidentes por usuario
+        // Puedes implementar aquí la funcionalidad para mostrar incidentes por usuario
+        System.out.println("Funcionalidad no implementada aún.");
     }
 
 
-    private Cliente seleccionarCliente(List<Cliente> clientes) {
-        if (clientes.isEmpty()) {
-            System.out.println("No hay clientes disponibles. Por favor, agregue clientes primero.");
-            return null;
-        }
-
-        System.out.println("Clientes disponibles:");
-        for (int i = 0; i < clientes.size(); i++) {
-            System.out.println((i + 1) + ". " + clientes.get(i).getRazonSocial());
-        }
-
-        System.out.println("Seleccione el número correspondiente al cliente:");
-        int opcionCliente = scanner.nextInt();
-
-        if (opcionCliente < 1 || opcionCliente > clientes.size()) {
-            System.out.println("Opción no válida. Seleccionando el primer cliente por defecto.");
-            return clientes.get(0);
-        }
-
-        return clientes.get(opcionCliente - 1);
+    private void cerrarModificarReporte(GestorReporteIncidencia gestorReporteIncidencia) {
+        // Lógica para cerrar o modificar un reporte existente
+        // Puedes implementar aquí la funcionalidad para cerrar o modificar un reporte existente
+        System.out.println("Funcionalidad no implementada aún.");
     }
 
-
-    private Servicio seleccionarServicio(List<Servicio> servicios) {
-        if (servicios.isEmpty()) {
-            System.out.println("No hay servicios disponibles. Por favor, agregue servicios primero.");
-            return null;
-        }
-        return servicios.get(0);
-    }
-
-    private OperadorMesaAyuda seleccionarOperador(List<OperadorMesaAyuda> operadores) {
-        if (operadores.isEmpty()) {
-            System.out.println("No hay operadores disponibles. Por favor, agregue operadores primero.");
-            return null;
-        }
-        return operadores.get(0);
-    }
-
-    private Tecnico seleccionarTecnico(List<Tecnico> tecnicos) {
-        if (tecnicos.isEmpty()) {
-            System.out.println("No hay técnicos disponibles. Por favor, agregue técnicos primero.");
-            return null;
-        }
-        return tecnicos.get(0);
-    }
-
-    private Date ingresarFecha() {
-        String fechaStr = scanner.nextLine();
-
+    public void crearReporte(GestorReporteIncidencia gestorReporteIncidencia, List<Servicio> listaServicios, List<Tecnico> listaTecnicos) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            return dateFormat.parse(fechaStr);
-        } catch (ParseException e) {
+            System.out.println("Ingrese el CUIT del cliente:");
+            long cuit = scanner.nextLong();
+            Cliente cliente = obtenerClientePorCuit(cuit);
+
+            if (cliente != null) {
+                // Mostrar nombre del cliente
+                System.out.println("Cliente: " + cliente.getRazonSocial());
+
+                if (!cliente.getServicios().isEmpty()) {
+                    System.out.println("Ingrese la descripción del problema:");
+                    scanner.nextLine(); // Consumir el salto de línea
+                    String descripcionProblema = scanner.nextLine();
+
+                    System.out.println("Seleccione un técnico:");
+                    Tecnico tecnicoSeleccionado = seleccionarTecnico(listaTecnicos);
+
+                    System.out.println("Ingrese el tiempo estimado de resolución (en minutos):");
+                    int tiempoEstimadoResolucion = scanner.nextInt();
+
+                    System.out.println("Ingrese la fecha de posible resolución (formato: dd/MM/yyyy):");
+                    scanner.nextLine(); // Consumir el salto de línea
+                    String fechaPosibleResolucionStr = scanner.nextLine();
+                    Date fechaPosibleResolucion = parseFecha(fechaPosibleResolucionStr);
+
+                    // La fecha de alta será la fecha actual
+                    Date fechaAlta = new Date();
+
+                    // Estado inicial: Pendiente
+                    String estado = "Pendiente";
+
+                    // Crear el reporte
+                    gestorReporteIncidencia.crearReporte(cliente, descripcionProblema, tecnicoSeleccionado,
+                            tiempoEstimadoResolucion, fechaPosibleResolucion, fechaAlta, estado);
+
+                    // Mostrar mensaje de éxito
+                    System.out.println("Reporte creado exitosamente.");
+                } else {
+                    System.out.println("El cliente no tiene servicios contratados. No se puede crear un reporte.");
+                }
+            } else {
+                System.out.println("No se encontró ningún cliente con el CUIT proporcionado.");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error al convertir la fecha", e);
+        }
+    }
+
+
+    private Cliente obtenerClientePorCuit(Long cuit) {
+        try {
+            // Utiliza el gestorCliente para obtener el cliente por CUIT
+            return gestorCliente.getClienteXCUIT(cuit);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    private Tecnico seleccionarTecnico(List<Tecnico> listaTecnicos) {
+        // Lógica para seleccionar un técnico
+        // Puedes implementar esta lógica según tus necesidades.
+        // Aquí, simplemente seleccionamos el primer técnico de la lista como ejemplo.
+        if (!listaTecnicos.isEmpty()) {
+            return listaTecnicos.get(0);
+        } else {
+            System.out.println("No hay técnicos disponibles. No se puede asignar un técnico al reporte.");
+            return null;
+        }
+    }
+
+    private Date parseFecha(String fechaStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return sdf.parse(fechaStr);
+        } catch (ParseException e) {
+            System.out.println("Error al parsear la fecha. Verifique el formato (dd/MM/yyyy).");
+            return null;
         }
     }
 }
+
+

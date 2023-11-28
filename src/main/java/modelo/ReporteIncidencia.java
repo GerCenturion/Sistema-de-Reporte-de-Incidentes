@@ -31,10 +31,6 @@ public class ReporteIncidencia extends EntidadId {
     private Servicio servicio;
 
     @ManyToOne
-    @JoinColumn(name = "idoperador")
-    private OperadorMesaAyuda operador;
-
-    @ManyToOne
     @JoinColumn(name = "idcliente", nullable = false)
     private Cliente cliente;
 
@@ -63,7 +59,6 @@ public class ReporteIncidencia extends EntidadId {
         this.descripcionProblema = descripcionProblema;
         this.tipoProblema = tipoProblema;
         this.servicio = servicio;
-        this.operador = operador;
         this.cliente = cliente;
         this.tecnico = tecnico;
         this.tiempoEstimadoResolucion = tiempoEstimadoResolucion;
@@ -72,5 +67,4 @@ public class ReporteIncidencia extends EntidadId {
         this.observacionesTecnico = observacionesTecnico;
     }
 
-    // Otros métodos y constructores
 }

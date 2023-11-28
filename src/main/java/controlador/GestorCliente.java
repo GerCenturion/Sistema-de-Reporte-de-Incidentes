@@ -18,16 +18,15 @@ public class GestorCliente extends Gestor {
         if(sesion == null || !sesion.isOpen())
             sesion = ConfigHibernate.openSession();
     }
-    
+
     public Cliente getClienteXCUIT(Long cuit){
         try {
-        
-            Query consulta = sesion.createQuery("SELECT cliente FROM Cliente cliente WHERE cliente.cuit = :cuit");
+            Query consulta = sesion.createQuery("SELECT cliente FROM Cliente cliente LEFT JOIN FETCH cliente.datosContacto WHERE cliente.cuit = :cuit");
             consulta.setParameter("cuit", cuit);
 
             Cliente cliente = (Cliente) consulta.uniqueResult();
             return cliente;
-            
+
         } catch (RuntimeException e) {
             e.printStackTrace();
             return null;

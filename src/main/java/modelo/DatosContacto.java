@@ -29,4 +29,5 @@ public class DatosContacto  extends EntidadId{
         this.celular = celular;
         this.email = email;
     }
+
 }

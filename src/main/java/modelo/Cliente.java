@@ -41,11 +41,15 @@ public class Cliente extends EntidadId{
     private DatosContacto datosContacto;//1 a 1
 
     public boolean tieneServicioContratado(Servicio servicio) {
-        for (ClienteServicio clienteServicio : this.clientes) {
+        for (ClienteServicio clienteServicio : this.servicios) {
             if (clienteServicio.getServicio().equals(servicio)) {
                 return true;
             }
         }
         return false;
     }
+    public String getRazonSocial() {
+        return this.razonSocial;
+    }
+
 }

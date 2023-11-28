@@ -27,21 +27,22 @@ import static vista.ReporteIncidenciaVista.*;
 
 public class MainProgram {
 
-    // Declarar las listas y variables fuera del método main
     private static List<Cliente> listaClientes = new ArrayList<>();
     private static List<Servicio> listaServicios = new ArrayList<>();
     private static List<OperadorMesaAyuda> listaOperadores = new ArrayList<>();
     private static List<Tecnico> listaTecnicos = new ArrayList<>();
-    private static ReporteIncidenciaVista reporteIncidenciaVista = new ReporteIncidenciaVista();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        GestorCliente gestorCliente = new GestorCliente();
+        GestorReporteIncidencia gestorReporteIncidencia = new GestorReporteIncidencia();
+        ReporteIncidenciaVista reporteIncidenciaVista = new ReporteIncidenciaVista(scanner, gestorCliente);
+
         GestorEspecialidad gestorEspecialidad = new GestorEspecialidad();
         GestorOperadorMesaAyuda gOperadorMesaAyuda = new GestorOperadorMesaAyuda();
-        GestorCliente gestorClientes = new GestorCliente();
         GestorServicios gestorServicios = new GestorServicios();
-        GestorReporteIncidencia gestorReporteIncidencia = new GestorReporteIncidencia();
         GestorTecnico gestorTecnicos = new GestorTecnico();
+
         ClienteVista clienteVista = new ClienteVista();
         TecnicoVista tecnicoVista = new TecnicoVista();
         EspecialidadVista especialidadVista = new EspecialidadVista();
@@ -49,21 +50,20 @@ public class MainProgram {
         ServiciosVista serviciosVista = new ServiciosVista();
 
         do {
-        try {
-            //Identifiquese, ingrese su legajo
-            System.out.println("Seleccione la funcionalidad a ejecutar");
-            System.out.println("1- Administrar Clientes");
-            System.out.println("2- Administrar Tecnico");
-            System.out.println("3- Administrar Especialidad");
-            System.out.println("4- Administrar Operador");
-            System.out.println("5- Administrar Servicios");
-            System.out.println("6- Administrar Reporte Incidencia");
-            System.out.println("7- Reporte de incidentes por tecnico por dias ");
-            System.out.println("8- Reporte de incidentes resueltos por especialidad");
-            System.out.println("9- Reporte Estadistico Técnico mas eficiente");
+            try {
+                System.out.println("Seleccione la funcionalidad a ejecutar");
+                System.out.println("1- Administrar Clientes");
+                System.out.println("2- Administrar Tecnico");
+                System.out.println("3- Administrar Especialidad");
+                System.out.println("4- Administrar Operador");
+                System.out.println("5- Administrar Servicios");
+                System.out.println("6- Administrar Reporte Incidencia");
+                System.out.println("7- Reporte de incidentes por tecnico por dias ");
+                System.out.println("8- Reporte de incidentes resueltos por especialidad");
+                System.out.println("9- Reporte Estadistico Técnico mas eficiente");
 
-            int opcionMenu = scanner.nextInt();
-            scanner.nextLine();
+                int opcionMenu = scanner.nextInt();
+                scanner.nextLine();
 
             if (opcionMenu == 1) {
                 GestorCliente gCliente = new GestorCliente();
@@ -173,7 +173,7 @@ public class MainProgram {
                 serviciosVista.mostrarMenuServicios();
             }
             else if (opcionMenu == 6) {
-                gestionarReportes(scanner, gestorClientes, gestorServicios, gOperadorMesaAyuda, gestorTecnicos, gestorReporteIncidencia);
+                reporteIncidenciaVista.gestionarReportes(gestorReporteIncidencia, listaServicios, listaTecnicos);
             }
             else if (opcionMenu == 7) {
                 // ... (código para Reporte de incidentes por tecnico por dias)
@@ -192,44 +192,6 @@ public class MainProgram {
         while (true) ; // Este bucle seguirá ejecutándose hasta que se rompa explícitamente
             }
 
-    private static void gestionarReportes(Scanner scanner, GestorCliente gestorClientes,
-                                          GestorServicios gestorServicios,
-                                          GestorOperadorMesaAyuda gOperadorMesaAyuda,
-                                          GestorTecnico gestorTecnicos,
-                                          GestorReporteIncidencia gestorReporteIncidencia) {
-        int opcion;
-        do {
-            System.out.println("\nGestión de Reportes de Incidencia");
-            System.out.println("1- Ver Incidentes por Usuario");
-            System.out.println("2- Crear Nuevo Reporte");
-            System.out.println("3- Cerrar Reporte");
-            System.out.println("0- Volver al Menú Principal");
-            System.out.print("Ingrese su opción: ");
-            opcion = scanner.nextInt();
-            scanner.nextLine();  // Consumir el salto de línea
-
-            switch (opcion) {
-                case 1:
-                    // Lógica para ver incidentes por usuario
-                    // Puedes llamar a un método en ReporteIncidenciaVista para manejar esto
-                    break;
-                case 2:
-                    ReporteIncidenciaVista reporteIncidenciaVista = new ReporteIncidenciaVista();
-                    reporteIncidenciaVista.crearReporte(gestorReporteIncidencia, listaServicios, listaOperadores, listaTecnicos);
-                    break;
-
-                case 3:
-                    // Lógica Cerrar reporte
-                    // Puedes llamar a un método en ReporteIncidenciaVista para manejar esto
-                    break;
-                case 0:
-                    System.out.println("Volviendo al Menú Principal");
-                    break;
-                default:
-                    System.out.println("Opción no válida. Inténtelo de nuevo.");
-            }
-        } while (opcion != 0);
-    }
 
     public static void obtenerConexion() {
         Connection con = null;
