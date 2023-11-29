@@ -36,7 +36,7 @@ public class ReporteIncidenciaVista {
             System.out.println("\nGestión de Reportes de Incidencia");
             System.out.println("1- Ver Incidentes por Usuario");
             System.out.println("2- Crear Nuevo Reporte");
-            System.out.println("3- Modificar/Cerrar Reporte");
+            System.out.println("3- Cerrar Reporte");
             System.out.println("0- Volver al Menú Principal");
             System.out.print("Ingrese su opción: ");
             opcion = scanner.nextInt();
