@@ -51,20 +51,5 @@ public class ReporteIncidencia extends EntidadId {
         // Constructor sin argumentos requerido por JPA
     }
 
-    public ReporteIncidencia(Date fechaAlta, String descripcionProblema, String tipoProblema,
-                             Servicio servicio, OperadorMesaAyuda operador, Cliente cliente,
-                             Tecnico tecnico, int tiempoEstimadoResolucion, Date fechaPosibleResolucion,
-                             String estado, String observacionesTecnico) {
-        this.fechaAlta = fechaAlta;
-        this.descripcionProblema = descripcionProblema;
-        this.tipoProblema = tipoProblema;
-        this.servicio = servicio;
-        this.cliente = cliente;
-        this.tecnico = tecnico;
-        this.tiempoEstimadoResolucion = tiempoEstimadoResolucion;
-        this.fechaPosibleResolucion = fechaPosibleResolucion;
-        this.estado = estado;
-        this.observacionesTecnico = observacionesTecnico;
-    }
 
 }

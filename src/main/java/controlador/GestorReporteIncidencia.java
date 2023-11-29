@@ -3,9 +3,9 @@ package controlador;
 import modelo.Cliente;
 import modelo.Tecnico;
 import modelo.ReporteIncidencia;
-
+import org.hibernate.Query;
 import java.util.Date;
-
+import java.lang.String;
 import org.hibernate.Transaction;
 import persistencia.ConfigHibernate;
 
@@ -47,6 +47,24 @@ public class GestorReporteIncidencia extends Gestor {
             }
         } finally {
             // Cierra la sesión al finalizar
+            sesion.close();
+        }
+    }
+    public List<ReporteIncidencia> obtenerReportesPorCliente(Cliente cliente) {
+        if (sesion == null || !sesion.isOpen()) {
+            sesion = ConfigHibernate.openSession();
+        }
+
+        try {
+            // Utiliza HQL (Hibernate Query Language) para obtener los reportes del cliente
+            String hql = "FROM ReporteIncidencia r WHERE r.cliente = :cliente";
+            Query query = sesion.createQuery(hql);  // Remove type parameter
+            query.setParameter("cliente", cliente);
+            return query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList(); // Devuelve una lista vacía en caso de error
+        } finally {
             sesion.close();
         }
     }

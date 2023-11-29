@@ -12,6 +12,7 @@ public class ReporteIncidenciaVista {
 
     private Scanner scanner;
     private GestorCliente gestorCliente;
+    private controlador.GestorReporteIncidencia GestorReporteIncidencia;
 
     public ReporteIncidenciaVista(Scanner scanner, GestorCliente gestorCliente) {
         this.scanner = scanner;
@@ -35,8 +36,7 @@ public class ReporteIncidenciaVista {
 
             switch (opcion) {
                 case 1:
-                    verIncidentesPorUsuario(); // Método para ver incidentes por usuario
-                    break;
+                    verIncidentesPorCliente(gestorReporteIncidencia);break;
                 case 2:
                     crearReporte(gestorReporteIncidencia, listaServicios, listaTecnicos);
                     break;
@@ -52,10 +52,32 @@ public class ReporteIncidenciaVista {
         } while (opcion != 0);
     }
 
-    private void verIncidentesPorUsuario() {
-        // Lógica para ver incidentes por usuario
-        // Puedes implementar aquí la funcionalidad para mostrar incidentes por usuario
-        System.out.println("Funcionalidad no implementada aún.");
+    private void verIncidentesPorCliente(GestorReporteIncidencia gestorReporteIncidencia) {
+        try {
+            System.out.println("Ingrese el CUIT del cliente:");
+            long cuit = scanner.nextLong();
+            Cliente cliente = obtenerClientePorCuit(cuit);
+
+            if (cliente != null) {
+                List<ReporteIncidencia> reportesCliente = gestorReporteIncidencia.obtenerReportesPorCliente(cliente);
+
+                if (!reportesCliente.isEmpty()) {
+                    System.out.println("Reportes de incidentes para el cliente " + cliente.getRazonSocial() + ":");
+                    for (ReporteIncidencia reporte : reportesCliente) {
+                        System.out.println("ID: " + reporte.getId() +
+                                ", Descripción: " + reporte.getDescripcionProblema() +
+                                ", Tipo de Problema: " + reporte.getTipoProblema() +
+                                ", Estado: " + reporte.getEstado());
+                    }
+                } else {
+                    System.out.println("El cliente no tiene reportes de incidentes registrados.");
+                }
+            } else {
+                System.out.println("No se encontró ningún cliente con el CUIT proporcionado.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void cerrarModificarReporte(GestorReporteIncidencia gestorReporteIncidencia) {
