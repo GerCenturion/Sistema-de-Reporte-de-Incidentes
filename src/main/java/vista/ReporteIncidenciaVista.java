@@ -74,20 +74,15 @@ public class ReporteIncidenciaVista {
             System.out.println("Detalles del Reporte Seleccionado:");
             System.out.println("ID: " + reporteSeleccionado.getId());
             System.out.println("Descripción: " + reporteSeleccionado.getDescripcionProblema());
-            // ... (mostrar más detalles si es necesario)
 
             // Preguntar al usuario si desea cerrar o modificar el reporte
             System.out.println("Seleccione la operación a realizar:");
             System.out.println("1- Cerrar Reporte");
-            System.out.println("2- Modificar Reporte");
             int opcionOperacion = scanner.nextInt();
 
             switch (opcionOperacion) {
                 case 1:
                     cerrarReporte(gestorReporteIncidencia, reporteSeleccionado);
-                    break;
-                case 2:
-                    modificarReporte(gestorReporteIncidencia, reporteSeleccionado);
                     break;
                 default:
                     System.out.println("Operación no válida.");
@@ -98,43 +93,29 @@ public class ReporteIncidenciaVista {
     }
 
     private void cerrarReporte(GestorReporteIncidencia gestorReporteIncidencia, ReporteIncidencia reporte) {
-        // Lógica para cerrar un reporte existente
-        // Puedes implementar aquí la funcionalidad para cerrar el reporte
-        // Modifica los campos que desees (Tiempo Estimado de Resolución, Observaciones del Técnico, Estado)
-        // Por ejemplo:
-        reporte.setTiempoEstimadoResolucion(0); // Establece el tiempo estimado como 0 (reporte cerrado)
-        reporte.setObservacionesTecnico("Cerrado"); // Observaciones del Técnico
-        reporte.setEstado("Resuelto");
+        // Mostrar detalles del reporte seleccionado (puedes personalizar esto según tus necesidades)
+        System.out.println("Detalles del Reporte Seleccionado:");
+        System.out.println("ID: " + reporte.getId());
+        System.out.println("Descripción: " + reporte.getDescripcionProblema());
 
-        gestorReporteIncidencia.actualizarReporte(reporte);
 
-        System.out.println("Reporte cerrado exitosamente.");
-    }
-
-    private void modificarReporte(GestorReporteIncidencia gestorReporteIncidencia, ReporteIncidencia reporte) {
-        // Lógica para modificar un reporte existente
-        // Puedes implementar aquí la funcionalidad para modificar el reporte
-        // Modifica los campos que desees (Tiempo Estimado de Resolución, Observaciones del Técnico, Estado)
-        // Por ejemplo:
-        System.out.println("Ingrese el nuevo Tiempo Estimado de Resolución (en minutos):");
-        int nuevoTiempoEstimadoResolucion = scanner.nextInt();
+        // Solicitar al usuario que complete el tiempo de resolución y agregue observaciones
+        System.out.println("Ingrese el tiempo de resolución (en minutos):");
+        int tiempoResolucion = scanner.nextInt();
         scanner.nextLine(); // Consumir el salto de línea
 
-        System.out.println("Ingrese las nuevas Observaciones del Técnico:");
-        String nuevasObservacionesTecnico = scanner.nextLine();
+        System.out.println("Ingrese observaciones del técnico:");
+        String observacionesTecnico = scanner.nextLine();
 
-        // Aquí podrías permitir al usuario cambiar más campos según tus necesidades
+        reporte.setTiempoEstimadoResolucion(tiempoResolucion);
+        reporte.setObservacionesTecnico(observacionesTecnico);
+        reporte.setEstado("Resuelto");
 
-        // Actualizar los campos del reporte
-        reporte.setTiempoEstimadoResolucion(nuevoTiempoEstimadoResolucion);
-        reporte.setObservacionesTecnico(nuevasObservacionesTecnico);
-
-        // No cambiamos el estado en este caso, pero puedes hacerlo si es necesario
-
+        // Actualizar el reporte en el gestor
         gestorReporteIncidencia.actualizarReporte(reporte);
 
-        System.out.println("Reporte modificado exitosamente.");
     }
+
 
     private void verIncidentesPorCliente(GestorReporteIncidencia gestorReporteIncidencia) {
         try {
@@ -164,11 +145,6 @@ public class ReporteIncidenciaVista {
         }
     }
 
-    private void cerrarReporte(GestorReporteIncidencia gestorReporteIncidencia) {
-        // Lógica para cerrar o modificar un reporte existente
-        // Puedes implementar aquí la funcionalidad para cerrar o modificar un reporte existente
-        System.out.println("Funcionalidad no implementada aún.");
-    }
 
     public void crearReporte(GestorReporteIncidencia gestorReporteIncidencia,
                              List<Servicio> listaServicios,
@@ -228,7 +204,7 @@ public class ReporteIncidenciaVista {
                     String estado = "Pendiente";
 
                     // Crear el reporte
-                    crearReporte(cliente, descripcionProblema, tecnicoSeleccionado,
+                    gestorReporteIncidencia.crearReporte(cliente, descripcionProblema, tecnicoSeleccionado,
                             tiempoEstimadoResolucion, fechaPosibleResolucion, fechaAlta, estado, tipoProblema);
 
                 } else {
@@ -242,8 +218,6 @@ public class ReporteIncidenciaVista {
         }
     }
 
-    private void crearReporte(Cliente cliente, String descripcionProblema, Tecnico tecnicoSeleccionado, int tiempoEstimadoResolucion, Date fechaPosibleResolucion, Date fechaAlta, String estado, String tipoProblema) {
-    }
 
     private Cliente obtenerClientePorCuit(Long cuit) {
         try {
@@ -259,9 +233,6 @@ public class ReporteIncidenciaVista {
             GestorTecnico gestorTecnico = new GestorTecnico();
             List<Tecnico> tecnicosConEspecialidades = gestorTecnico.obtenerTodosTecnicosConEspecialidades();
 
-            // Aquí puedes implementar la lógica para mostrar la lista de técnicos con especialidades
-            // y permitir al usuario seleccionar uno. Puedes utilizar un bucle, mostrar índices, etc.
-            // Aquí te dejo un ejemplo simple:
 
             for (int i = 0; i < tecnicosConEspecialidades.size(); i++) {
                 Tecnico tecnico = tecnicosConEspecialidades.get(i);
@@ -297,7 +268,6 @@ public class ReporteIncidenciaVista {
             especialidadesStr.append(obtenerDenominacionEspecialidad(especialidad)).append(", ");
         }
 
-        // Elimina la coma final y espacio si hay al menos una especialidad
         if (especialidadesStr.length() > 0) {
             especialidadesStr.delete(especialidadesStr.length() - 2, especialidadesStr.length());
         }
@@ -306,7 +276,6 @@ public class ReporteIncidenciaVista {
     }
 
     private String obtenerDenominacionEspecialidad(TecnicoEspecialidad especialidad) {
-        // Ajusta esto según la estructura de tu clase Especialidad
         return especialidad.getEspecialidad().getDenominacion();
     }
 
