@@ -24,6 +24,9 @@ import vista.OperadorMesaAyudaVista;
 import vista.ServiciosVista;
 import vista.ReporteIncidenciaVista;
 import static vista.ReporteIncidenciaVista.*;
+import com.utn.trabajofinalargprograma.EstadisticasTecnicos;
+
+
 
 public class MainProgram {
 
@@ -176,13 +179,17 @@ public class MainProgram {
                 reporteIncidenciaVista.gestionarReportes(gestorReporteIncidencia, listaServicios, listaTecnicos);
             }
             else if (opcionMenu == 7) {
-                // ... (código para Reporte de incidentes por tecnico por dias)
+                EstadisticasTecnicos estadisticasTecnicos = new EstadisticasTecnicos(gestorReporteIncidencia);
+                Tecnico tecnicoMasEficiente = estadisticasTecnicos.obtenerTecnicoMasEficiente();
             }
             else if (opcionMenu == 8) {
-                // ... (código para Reporte de incidentes resueltos por especialidad)
+                EstadisticasTecnicos estadisticasTecnicos = new EstadisticasTecnicos(gestorReporteIncidencia);
+                estadisticasTecnicos.mostrarEstadisticasTecnicos();
             }
             else if (opcionMenu == 9) {
-                // ... (código para Reporte Estadistico Técnico mas eficiente)
+                EstadisticasTecnicos estadisticasTecnicos = new EstadisticasTecnicos(gestorReporteIncidencia);
+                String infoTecnicoMasEficiente = estadisticasTecnicos.obtenerInfoTecnicoMasEficiente();
+                System.out.println(infoTecnicoMasEficiente);
             }
 
 

@@ -24,10 +24,10 @@ public class Servicio extends EntidadId {
     private String denominacion;
 
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ClienteServicio> cliente; // Cambiado a "clientes"
+    private List<ClienteServicio> cliente;
 
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ReporteIncidencia> reportesIncidencia; // Mantenido como "reportesIncidencia"
+    private List<ReporteIncidencia> reportesIncidencia;
 
 
     
