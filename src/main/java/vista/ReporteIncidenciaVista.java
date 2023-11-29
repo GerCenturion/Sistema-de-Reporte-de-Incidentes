@@ -1,12 +1,20 @@
 package vista;
 
-import controlador.*;
-import modelo.*;
-import java.util.Date;
+import controlador.GestorCliente;
+import controlador.GestorReporteIncidencia;
+import controlador.GestorTecnico;
+import modelo.Cliente;
+import modelo.ReporteIncidencia;
+import modelo.Servicio;
+import modelo.Tecnico;
+import modelo.TecnicoEspecialidad;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+
 
 public class ReporteIncidenciaVista {
 
@@ -41,7 +49,7 @@ public class ReporteIncidenciaVista {
                     crearReporte(gestorReporteIncidencia, listaServicios, listaTecnicos);
                     break;
                 case 3:
-                    cerrarModificarReporte(gestorReporteIncidencia);
+                    cerrarOmodificarReporte(gestorReporteIncidencia);
                     break;
                 case 0:
                     System.out.println("Volviendo al Menú Principal");
@@ -50,6 +58,82 @@ public class ReporteIncidenciaVista {
                     System.out.println("Opción no válida. Inténtelo de nuevo.");
             }
         } while (opcion != 0);
+    }
+
+    private void cerrarOmodificarReporte(GestorReporteIncidencia gestorReporteIncidencia) {
+        verIncidentesPorCliente(gestorReporteIncidencia);
+
+        // Permitir al usuario seleccionar un reporte para cerrar o modificar
+        System.out.print("Ingrese el ID del reporte que desea cerrar o modificar: ");
+        int idReporteSeleccionado = scanner.nextInt();
+
+        ReporteIncidencia reporteSeleccionado = gestorReporteIncidencia.getReportePorId(idReporteSeleccionado);
+
+        if (reporteSeleccionado != null) {
+            // Mostrar detalles del reporte seleccionado (puedes personalizar esto según tus necesidades)
+            System.out.println("Detalles del Reporte Seleccionado:");
+            System.out.println("ID: " + reporteSeleccionado.getId());
+            System.out.println("Descripción: " + reporteSeleccionado.getDescripcionProblema());
+            // ... (mostrar más detalles si es necesario)
+
+            // Preguntar al usuario si desea cerrar o modificar el reporte
+            System.out.println("Seleccione la operación a realizar:");
+            System.out.println("1- Cerrar Reporte");
+            System.out.println("2- Modificar Reporte");
+            int opcionOperacion = scanner.nextInt();
+
+            switch (opcionOperacion) {
+                case 1:
+                    cerrarReporte(gestorReporteIncidencia, reporteSeleccionado);
+                    break;
+                case 2:
+                    modificarReporte(gestorReporteIncidencia, reporteSeleccionado);
+                    break;
+                default:
+                    System.out.println("Operación no válida.");
+            }
+        } else {
+            System.out.println("No se encontró ningún reporte con el ID proporcionado.");
+        }
+    }
+
+    private void cerrarReporte(GestorReporteIncidencia gestorReporteIncidencia, ReporteIncidencia reporte) {
+        // Lógica para cerrar un reporte existente
+        // Puedes implementar aquí la funcionalidad para cerrar el reporte
+        // Modifica los campos que desees (Tiempo Estimado de Resolución, Observaciones del Técnico, Estado)
+        // Por ejemplo:
+        reporte.setTiempoEstimadoResolucion(0); // Establece el tiempo estimado como 0 (reporte cerrado)
+        reporte.setObservacionesTecnico("Cerrado"); // Observaciones del Técnico
+        reporte.setEstado("Resuelto");
+
+        gestorReporteIncidencia.actualizarReporte(reporte);
+
+        System.out.println("Reporte cerrado exitosamente.");
+    }
+
+    private void modificarReporte(GestorReporteIncidencia gestorReporteIncidencia, ReporteIncidencia reporte) {
+        // Lógica para modificar un reporte existente
+        // Puedes implementar aquí la funcionalidad para modificar el reporte
+        // Modifica los campos que desees (Tiempo Estimado de Resolución, Observaciones del Técnico, Estado)
+        // Por ejemplo:
+        System.out.println("Ingrese el nuevo Tiempo Estimado de Resolución (en minutos):");
+        int nuevoTiempoEstimadoResolucion = scanner.nextInt();
+        scanner.nextLine(); // Consumir el salto de línea
+
+        System.out.println("Ingrese las nuevas Observaciones del Técnico:");
+        String nuevasObservacionesTecnico = scanner.nextLine();
+
+        // Aquí podrías permitir al usuario cambiar más campos según tus necesidades
+
+        // Actualizar los campos del reporte
+        reporte.setTiempoEstimadoResolucion(nuevoTiempoEstimadoResolucion);
+        reporte.setObservacionesTecnico(nuevasObservacionesTecnico);
+
+        // No cambiamos el estado en este caso, pero puedes hacerlo si es necesario
+
+        gestorReporteIncidencia.actualizarReporte(reporte);
+
+        System.out.println("Reporte modificado exitosamente.");
     }
 
     private void verIncidentesPorCliente(GestorReporteIncidencia gestorReporteIncidencia) {
@@ -80,7 +164,7 @@ public class ReporteIncidenciaVista {
         }
     }
 
-    private void cerrarModificarReporte(GestorReporteIncidencia gestorReporteIncidencia) {
+    private void cerrarReporte(GestorReporteIncidencia gestorReporteIncidencia) {
         // Lógica para cerrar o modificar un reporte existente
         // Puedes implementar aquí la funcionalidad para cerrar o modificar un reporte existente
         System.out.println("Funcionalidad no implementada aún.");
@@ -144,7 +228,7 @@ public class ReporteIncidenciaVista {
                     String estado = "Pendiente";
 
                     // Crear el reporte
-                    gestorReporteIncidencia.crearReporte(cliente, descripcionProblema, tecnicoSeleccionado,
+                    crearReporte(cliente, descripcionProblema, tecnicoSeleccionado,
                             tiempoEstimadoResolucion, fechaPosibleResolucion, fechaAlta, estado, tipoProblema);
 
                 } else {
@@ -156,6 +240,9 @@ public class ReporteIncidenciaVista {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void crearReporte(Cliente cliente, String descripcionProblema, Tecnico tecnicoSeleccionado, int tiempoEstimadoResolucion, Date fechaPosibleResolucion, Date fechaAlta, String estado, String tipoProblema) {
     }
 
     private Cliente obtenerClientePorCuit(Long cuit) {
